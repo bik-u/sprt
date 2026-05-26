@@ -1,1 +1,1 @@
-Tauri
+stremio-partly-rebuilt-but-tui
