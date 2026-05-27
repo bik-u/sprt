@@ -1,1 +1,1 @@
-stremio-partly-rebuilt-but-tui
+stremio-client-tauri
