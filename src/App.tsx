@@ -1,20 +1,28 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { invoke } from "@tauri-apps/api/core";
 import "./App.css";
 
+type ApiErrorKind = {
+  kind: 'unauthorized',
+  message: String
+}
+
+async function invoke_get_has_key(): Promise<boolean> {
+  try {
+    return await invoke<boolean>('get_has_auth_key_and_check_if_valid');
+  } catch (e) {
+    const error = e as ApiErrorKind;
+    if (error.kind === 'unauthorized') return false;
+    throw e; 
+  }
+}
 
 function App() {
-  const [greetMsg, setGreetMsg] = useState("");
-  const [name, setName] = useState("");
+  const [hasKey, setHasKey] = useState(false);
 
-  async function greet() {
-    // Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-    setGreetMsg(await invoke("greet", { name }));
-  }
-
-  async function login() {
- 
-  }
+  useEffect(() => {
+    invoke_get_has_key().then(result => setHasKey(result));
+  }, []);
 
   return (
     <main className="container">

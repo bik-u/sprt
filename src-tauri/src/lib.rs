@@ -1,21 +1,27 @@
-use std::process::Child;
-use std::sync::{Arc, Mutex};
+use crate::auth::AuthState;
+use tauri::Manager;
+use tauri_plugin_store::StoreExt;
 
+pub mod auth;
 pub mod plugins;
 pub mod stremio;
 
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
-#[tauri::command]
-fn greet(name: &str) -> String {
-    format!("Hello, {}! You've been greeted from Rust!", name)
-}
+const STORE_PATH: &str = "strpstore.json";
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
-        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_opener::init())
-        .invoke_handler(tauri::generate_handler![greet])
+        .setup(|app| {
+            let store = app.store(STORE_PATH);
+            let auth_state = AuthState::init();
+            auth_state.populate_key_from_store(app.handle().clone());
+            app.manage(auth_state);
+
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![auth::get_has_auth_key])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
