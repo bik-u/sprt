@@ -1,4 +1,5 @@
 use crate::auth::AuthState;
+use stremio::api::ApiClientState;
 use tauri::Manager;
 use tauri_plugin_store::StoreExt;
 
@@ -18,10 +19,14 @@ pub fn run() {
             let auth_state = AuthState::init();
             auth_state.populate_key_from_store(app.handle().clone());
             app.manage(auth_state);
+            // Reqwest client
+            app.manage(ApiClientState::init());
 
             Ok(())
         })
-        .invoke_handler(tauri::generate_handler![auth::get_has_auth_key])
+        .invoke_handler(tauri::generate_handler![
+            auth::get_has_auth_key_and_check_user
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

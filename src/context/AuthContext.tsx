@@ -1,12 +1,10 @@
-import { createContext} from "react"
+import { createContext } from "react";
 
-export type AuthState = "loading" | "authenticated" | "unauthenticated"
+export type AuthState = "loading" | "authenticated" | "unauthenticated";
 
 interface AuthContextType {
-  auth: AuthState
-  setAuth: (state: AuthState) => void
+  auth: AuthState;
+  setAuth: (state: AuthState) => void;
 }
 
-
-export const AuthContext = createContext<AuthContextType | null>(null)
-
+export const AuthContext = createContext<AuthContextType | null>(null);

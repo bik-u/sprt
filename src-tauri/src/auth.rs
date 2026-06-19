@@ -1,9 +1,8 @@
-use serde_json::json;
-use std::sync::Arc;
+use crate::stremio::api::ApiClientState;
+
 use std::sync::RwLock;
 use tauri::Manager;
-use tauri::{EventLoopMessage, Wry};
-use tauri_plugin_store::Store;
+use tauri::State;
 use tauri_plugin_store::StoreExt;
 
 #[derive(Default)]
@@ -36,14 +35,11 @@ impl AuthState {
 }
 
 #[tauri::command]
-pub async fn get_has_auth_key_and_check_if_valid(
+pub async fn get_has_auth_key_and_check_user(
+    api_client_state: State<'_, ApiClientState>,
     app_handle: tauri::AppHandle,
 ) -> Result<bool, String> {
     let auth_state = app_handle.state::<AuthState>();
-    match auth_state.get_key() {
-        Some(v) => {}
-        () => {}
-    }
 
     Ok(false)
 }

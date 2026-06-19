@@ -27,3 +27,5 @@ dirs = "6.0.0"
 tauri-plugin-store = "2"
 thiserror = "2.0.18"
 anyhow = "1.0.102"
+reqwest = { version = "0.13.4", features = ["json"] }
+tauri-plugin-http = "2.5.9"

@@ -1,6 +1,17 @@
-use serde_json::value::Value;
+use reqwest::Client;
 
-const MAIN_API: &str = "https://api.strem.io/api/";
+pub mod addon;
+pub mod user;
+
+const MAIN_API_URL: &str = "https://api.strem.io/api/";
+
+pub struct ApiClientState(Client);
+
+impl ApiClientState {
+    pub fn init() -> Self {
+        Self(Client::new())
+    }
+}
 
 #[derive(thiserror::Error, Debug)]
 pub enum ApiError {
@@ -28,10 +39,5 @@ impl serde::Serialize for ApiError {
     }
 }
 
-pub struct ApiResponse {
-    pub result: Result<Value, String>,
-}
-
-fn match_status_code_to_error() {}
-
-pub async fn get_addon_collection() {}
+#[derive(serde::Serialize)]
+pub struct AuthenticationData {}
