@@ -4,7 +4,7 @@ export type LogType = "loading" | "error" | "warning";
 
 interface LogContextType {
   logs: Array<LogType>;
-  
+
   addAuth: (log: LogType) => void;
 }
 

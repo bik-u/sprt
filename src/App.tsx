@@ -31,18 +31,18 @@ function App() {
     invoke("show_window");
   }, []);
 
-    return (
-      <div className="flex h-screen flex-col bg-oled-dark divide-y divide-border-grey select-none">
-        <TopBar></TopBar>
-        <div className="flex flex-1 divide-x divide-border-grey">
-          {hasKey ? <NavBar size={"small"}></NavBar> : null}
-          <div className="flex flex-1 flex-col divide-y divide-border-grey">
-            {hasKey ? <Main></Main> : <LoginScreen></LoginScreen>}
-            <Output></Output>
-          </div>
+  return (
+    <div className="flex h-screen flex-col bg-oled-dark divide-y divide-border-grey select-none">
+      <TopBar></TopBar>
+      <div className="flex flex-1 divide-x divide-border-grey">
+        {hasKey ? <NavBar size={"small"}></NavBar> : null}
+        <div className="flex flex-1 flex-col divide-y divide-border-grey">
+          {hasKey ? <Main></Main> : <LoginScreen></LoginScreen>}
+          <Output></Output>
         </div>
       </div>
-    );
+    </div>
+  );
 }
 
 export default App;
