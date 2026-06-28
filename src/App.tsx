@@ -3,6 +3,9 @@ import { invoke } from "@tauri-apps/api/core";
 
 import Output from "./screens/Output";
 import TopBar from "./components/TopBar";
+import NavBar from "./components/NavBar";
+import Main from "./screens/Main";
+import LoginScreen from "./screens/Login";
 
 type ApiErrorKind = {
   kind: "unauthorized";
@@ -21,27 +24,25 @@ async function invoke_get_has_key(): Promise<boolean> {
 
 function App() {
   const [hasKey, setHasKey] = useState(false);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     //invoke_get_has_key().then(result => setHasKey(result));
+    invoke("show_window");
   }, []);
 
-  return (
-    <div className="flex h-screen flex-col divide-y-4 bg-oled-dark">
-      <TopBar></TopBar>
-      <div className="flex flex-1 divide-x-4">
-        <div className="w-[3%] min-w-10">
-          <p className="text-white"> navbar section</p>
-        </div>
-        <div className="flex flex-1 flex-col divide-y-4">
-          <div className="flex-1 overflow-auto">
-            <p className="text-white">main section</p>
+    return (
+      <div className="flex h-screen flex-col bg-oled-dark divide-y divide-border-grey select-none">
+        <TopBar></TopBar>
+        <div className="flex flex-1 divide-x divide-border-grey">
+          {hasKey ? <NavBar size={"small"}></NavBar> : null}
+          <div className="flex flex-1 flex-col divide-y divide-border-grey">
+            {hasKey ? <Main></Main> : <LoginScreen></LoginScreen>}
+            <Output></Output>
           </div>
-          <Output></Output>
         </div>
       </div>
-    </div>
-  );
+    );
 }
 
 export default App;

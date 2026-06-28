@@ -9,6 +9,11 @@ pub mod stremio;
 
 const STORE_PATH: &str = "strpstore.json";
 
+#[tauri::command]
+fn show_window(window: tauri::WebviewWindow) {
+    window.show().unwrap();
+}
+
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
     tauri::Builder::default()
@@ -25,7 +30,8 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            auth::get_has_auth_key_and_check_user
+            auth::get_has_auth_key_and_check_user,
+            show_window
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
