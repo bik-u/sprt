@@ -19,7 +19,7 @@ export function Button({ label, onClick, className }: ButtonProps) {
     <button
       className={
         className == null
-          ? "text-center bg-transparent px-4 py-2 min-w-50 min-h-13 outline-nonez border rounded-2xl border-zinc-700 focus:border-white hover:text-white  placeholder-zinc-500 font-mono text-zinc-500 transition-colors"
+          ? "text-center px-4 py-2 min-w-80 min-h-13 outline-nonez border rounded-4xl border-zinc-700 focus:border-white hover:text-zinc-300 hover:bg-zinc-900 font-mono text-white transition-colors"
           : className
       }
       onClick={hasClicked}

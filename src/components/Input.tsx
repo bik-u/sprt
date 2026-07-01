@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 interface InputProps {
   _disabled: boolean;
   value: string;
@@ -26,7 +24,7 @@ export function DefaultInput({
       value={value}
       onChange={_onChange}
       disabled={_disabled}
-      className={`bg-transparent outline-none min-h-13 min-w-100 border pl-10 pr-10 rounded-2xl border-zinc-700 focus:border-white hover:placeholder-white placeholder-zinc-500 font-mono text-white transition-colors ${className ?? ""}`}
+      className={`outline-none bg-transparent min-h-13 min-w-100 border pl-10 pr-10 rounded border-transparent hover:bg-zinc-900 placeholder-white font-mono text-white transition-colors ${className ?? ""}`}
       placeholder={placeHolder}
       type={inputType}
     ></input>

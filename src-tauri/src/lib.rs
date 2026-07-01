@@ -1,11 +1,13 @@
-use crate::auth::AuthState;
 use stremio::api::ApiClientState;
 use tauri::Manager;
 use tauri_plugin_store::StoreExt;
 
-pub mod auth;
-pub mod plugins;
+pub mod sprt;
+pub mod sprt_plugins;
 pub mod stremio;
+
+use sprt::auth::AuthState;
+use sprt::{get_has_auth_key_and_check_valid, login_and_populate};
 
 const STORE_PATH: &str = "strpstore.json";
 
@@ -30,8 +32,9 @@ pub fn run() {
             Ok(())
         })
         .invoke_handler(tauri::generate_handler![
-            auth::get_has_auth_key_and_check_user,
-            show_window
+            show_window,
+            get_has_auth_key_and_check_valid,
+            login_and_populate
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

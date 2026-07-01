@@ -2,11 +2,33 @@ import { useState, useContext } from "react";
 import { Button } from "../components/Button";
 import { DefaultInput } from "../components/Input";
 import { Eye, EyeClosed } from "lucide-react";
+import { invoke } from "@tauri-apps/api/core";
 
-export default function LoginScreen() {
+interface LoginProps {
+  onLoginSuccess: () => void;
+}
+
+async function invoke_login(
+  username: string,
+  password: string,
+): Promise<boolean> {
+  try {
+    return await invoke<boolean>("login_and_populate", {
+      email: username,
+      password: password,
+    });
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
+export default function LoginScreen({ onLoginSuccess }: LoginProps) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isPassVisible, setisPassVisible] = useState(false);
+  const [loginFailed, setLoginFailed] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   async function onUsernameChanged(value: string) {
     setUsername(value);
@@ -16,7 +38,16 @@ export default function LoginScreen() {
     setPassword(value);
   }
 
-  async function onLoginClicked() {}
+  async function onLoginClicked() {
+    setIsLoading(true);
+    setLoginFailed(false);
+    if (await invoke_login(username, password)) {
+      onLoginSuccess();
+    } else {
+      setLoginFailed(true);
+    }
+    setIsLoading(false);
+  }
 
   async function togglePassVisible() {
     setisPassVisible(!isPassVisible);
@@ -24,17 +55,19 @@ export default function LoginScreen() {
 
   return (
     <div className="grid h-full ">
-      <div className="flex flex-col items-center justify-center gap-10">
-        <pre className="text-zinc-500 font-mono text-center text-9xl"></pre>
+      <div className="flex items-center justify-center gap-10">
+        <pre className="text-white font-mono text-center text-xl">
+          <pre className="text-4xl icon-glow"> Stremio Tauri + Addons </pre>
+        </pre>
         <div className="flex flex-col items-center gap-3">
           <DefaultInput
-            _disabled={false}
+            _disabled={isLoading}
             value={username}
             onChange={onUsernameChanged}
-            placeHolder="Email"
+            placeHolder="E-mail"
           ></DefaultInput>
           <DefaultInput
-            _disabled={false}
+            _disabled={isLoading}
             value={password}
             onChange={onPasswordChanged}
             placeHolder="Password"
@@ -42,7 +75,7 @@ export default function LoginScreen() {
           ></DefaultInput>
           <div className="flex items-center gap-3">
             <Button label="Login" onClick={onLoginClicked}></Button>
-            <div className="text-zinc-500 hover:text-white">
+            <div className="text-zinc-100 hover:text-white">
               {!isPassVisible ? (
                 <EyeClosed onClick={togglePassVisible}></EyeClosed>
               ) : (
@@ -50,6 +83,14 @@ export default function LoginScreen() {
               )}
             </div>
           </div>
+          {loginFailed ? (
+            <div className="flex text-red-600 min-w-50">
+              Stremio login failed
+            </div>
+          ) : null}
+          {isLoading ? (
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-blue-600" />
+          ) : null}
         </div>
       </div>
     </div>
