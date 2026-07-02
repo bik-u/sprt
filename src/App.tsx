@@ -31,7 +31,7 @@ function App() {
   }, []);
 
   return (
-    <div className="flex h-screen flex-col animated-bg divide-y divide-border-grey select-none">
+    <div className="flex h-screen flex-col bg-oled-dark divide-y divide-border-grey select-none">
       <TopBar></TopBar>
       <div className="flex flex-1 divide-x divide-border-grey">
         {hasKey ? <NavBar size={"small"}></NavBar> : null}

@@ -35,6 +35,14 @@ body,
 }
 
 .animated-bg {
-  background: linear-gradient(135deg, #000000, #020202, #000000);
-  background-size: 100% 100%;
+  background: linear-gradient(
+    135deg,
+    #000000,
+    #080808,
+    #000000,
+    #080808,
+    #080808
+  );
+  background-size: 200% 200%;
+  animation: gradiantShift 10ms infinite;
 }
